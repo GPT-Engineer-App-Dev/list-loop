@@ -52,7 +52,10 @@ export const usePumps = () => useQuery({
 export const useAddPumps = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (newPump) => fromSupabase(supabase.from('pumps').insert([newPump])),
+        mutationFn: (newPump) => {
+            const { id, ...pumpData } = newPump; // Exclude the id field
+            return fromSupabase(supabase.from('pumps').insert([pumpData]));
+        },
         onSuccess: () => {
             queryClient.invalidateQueries('pumps');
         },
