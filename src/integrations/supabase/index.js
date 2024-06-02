@@ -19,46 +19,57 @@ const fromSupabase = async (query) => {
 
 /* supabase integration types
 
-// EXAMPLE TYPES SECTION
-// DO NOT USE TYPESCRIPT
-
-Foo // table: foos
+Pumps // table: pumps
     id: number
-    title: string
+    name: string
+    latitude: number
+    longitude: number
+    bilventil: string
+    cykelventil: string
+    racer_ventil: string
+    address: string
+    status: string
+    model: string
+    comment: string
 
-Bar // table: bars
+PumpsDuplicate // table: pumps_duplicate
     id: number
-    foo_id: number // foreign key to Foo
-	
+    name: string
+    latitude: number
+    longitude: number
+    bilventil: boolean
+    cykelventil: boolean
+
 */
 
-// Example hook for models
+// Hooks for Pumps table
+export const usePumps = () => useQuery({
+    queryKey: ['pumps'],
+    queryFn: () => fromSupabase(supabase.from('pumps').select('*')),
+});
 
-export const useFoo = ()=> useQuery({
-    queryKey: ['foo'],
-    queryFn: fromSupabase(supabase.from('foo')),
-})
-export const useAddFoo = () => {
+export const useAddPump = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (newFoo)=> fromSupabase(supabase.from('foo').insert([{ title: newFoo.title }])),
-        onSuccess: ()=> {
-            queryClient.invalidateQueries('foo');
+        mutationFn: (newPump) => fromSupabase(supabase.from('pumps').insert([newPump])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('pumps');
         },
     });
 };
 
-export const useBar = ()=> useQuery({
-    queryKey: ['bar'],
-    queryFn: fromSupabase(supabase.from('bar')),
-})
-export const useAddBar = () => {
+// Hooks for PumpsDuplicate table
+export const usePumpsDuplicate = () => useQuery({
+    queryKey: ['pumps_duplicate'],
+    queryFn: () => fromSupabase(supabase.from('pumps_duplicate').select('*')),
+});
+
+export const useAddPumpsDuplicate = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (newBar)=> fromSupabase(supabase.from('bar').insert([{ foo_id: newBar.foo_id }])),
-        onSuccess: ()=> {
-            queryClient.invalidateQueries('bar');
+        mutationFn: (newPumpsDuplicate) => fromSupabase(supabase.from('pumps_duplicate').insert([newPumpsDuplicate])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('pumps_duplicate');
         },
     });
 };
-
