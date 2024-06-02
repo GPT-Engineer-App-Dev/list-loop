@@ -8,10 +8,15 @@ const Index = () => {
   const { data: pumps, isLoading, error } = usePumps();
   const addPumpMutation = useAddPumps();
 
-  const addPump = () => {
+  const addPump = async () => {
     if (newPump.name.trim() !== "") {
-      addPumpMutation.mutate(newPump);
-      setNewPump({ name: "", latitude: "", longitude: "", bilventil: "", cykelventil: "", racer_ventil: "", address: "", status: "", model: "", comment: "" });
+      try {
+        await addPumpMutation.mutateAsync(newPump);
+        setNewPump({ name: "", latitude: "", longitude: "", bilventil: "", cykelventil: "", racer_ventil: "", address: "", status: "", model: "", comment: "" });
+      } catch (error) {
+        console.error("Error adding pump:", error);
+        alert("Failed to add pump: " + error.message);
+      }
     }
   };
 
