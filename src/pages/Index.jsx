@@ -1,7 +1,15 @@
 import { useState } from "react";
-import { Container, VStack, HStack, Input, Button, Text, Checkbox, IconButton } from "@chakra-ui/react";
+import { Container, VStack, HStack, Input, Button, Text, Checkbox, IconButton, Box, Flex } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { usePumps, useAddPumps } from "../integrations/supabase/index.js";
+
+const Footer = () => (
+  <Box as="footer" py={4} bg="gray.700" color="white" mt={10}>
+    <Flex justify="center">
+      <Text>&copy; {new Date().getFullYear()} Todo App. All rights reserved.</Text>
+    </Flex>
+  </Box>
+);
 
 const Index = () => {
   const [newPump, setNewPump] = useState({ name: "", latitude: "", longitude: "", bilventil: "", cykelventil: "", racer_ventil: "", address: "", status: "", model: "", comment: "" });
@@ -56,6 +64,7 @@ const Index = () => {
           ))}
         </VStack>
       </VStack>
+    <Footer />
     </Container>
   );
 };
